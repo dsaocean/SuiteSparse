@@ -22,6 +22,16 @@
 #define csi int64_t
 #endif
 
+#if defined CSPARSE_DLL_EXPORT
+#define CS_DLLSPEC __declspec(dllexport)
+#else
+#define CS_DLLSPEC __declspec(dllimport)
+#endif
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /* --- primary CSparse routines and data structures ------------------------- */
 typedef struct cs_sparse    /* matrix in compressed-column or triplet form */
 {
@@ -34,27 +44,27 @@ typedef struct cs_sparse    /* matrix in compressed-column or triplet form */
     csi nz ;        /* # of entries in triplet matrix, -1 for compressed-col */
 } cs ;
 
-cs *cs_add (const cs *A, const cs *B, double alpha, double beta) ;
-csi cs_cholsol (csi order, const cs *A, double *b) ;
-cs *cs_compress (const cs *T) ;
-csi cs_dupl (cs *A) ;
-csi cs_entry (cs *T, csi i, csi j, double x) ;
-csi cs_gaxpy (const cs *A, const double *x, double *y) ;
-cs *cs_load (FILE *f) ;
-csi cs_lusol (csi order, const cs *A, double *b, double tol) ;
-cs *cs_multiply (const cs *A, const cs *B) ;
-double cs_norm (const cs *A) ;
-csi cs_print (const cs *A, csi brief) ;
-csi cs_qrsol (csi order, const cs *A, double *b) ;
-cs *cs_transpose (const cs *A, csi values) ;
+CS_DLLSPEC cs *cs_add (const cs *A, const cs *B, double alpha, double beta) ;
+CS_DLLSPEC csi cs_cholsol (csi order, const cs *A, double *b) ;
+CS_DLLSPEC cs *cs_compress (const cs *T) ;
+CS_DLLSPEC csi cs_dupl (cs *A) ;
+CS_DLLSPEC csi cs_entry (cs *T, csi i, csi j, double x) ;
+CS_DLLSPEC csi cs_gaxpy (const cs *A, const double *x, double *y) ;
+CS_DLLSPEC cs *cs_load (FILE *f) ;
+CS_DLLSPEC csi cs_lusol (csi order, const cs *A, double *b, double tol) ;
+CS_DLLSPEC cs *cs_multiply (const cs *A, const cs *B) ;
+CS_DLLSPEC double cs_norm (const cs *A) ;
+CS_DLLSPEC csi cs_print (const cs *A, csi brief) ;
+CS_DLLSPEC csi cs_qrsol (csi order, const cs *A, double *b) ;
+CS_DLLSPEC cs *cs_transpose (const cs *A, csi values) ;
 /* utilities */
-void *cs_calloc (csi n, size_t size) ;
-void *cs_free (void *p) ;
-void *cs_realloc (void *p, csi n, size_t size, csi *ok) ;
-cs *cs_spalloc (csi m, csi n, csi nzmax, csi values, csi triplet) ;
-cs *cs_spfree (cs *A) ;
-csi cs_sprealloc (cs *A, csi nzmax) ;
-void *cs_malloc (csi n, size_t size) ;
+CS_DLLSPEC void *cs_calloc (csi n, size_t size) ;
+CS_DLLSPEC void *cs_free (void *p) ;
+CS_DLLSPEC void *cs_realloc (void *p, csi n, size_t size, csi *ok) ;
+CS_DLLSPEC cs *cs_spalloc (csi m, csi n, csi nzmax, csi values, csi triplet) ;
+CS_DLLSPEC cs *cs_spfree (cs *A) ;
+CS_DLLSPEC csi cs_sprealloc (cs *A, csi nzmax) ;
+CS_DLLSPEC void *cs_malloc (csi n, size_t size) ;
 
 /* --- secondary CSparse routines and data structures ----------------------- */
 typedef struct cs_symbolic  /* symbolic Cholesky, LU, or QR analysis */
@@ -88,58 +98,58 @@ typedef struct cs_dmperm_results    /* cs_dmperm or cs_scc output */
     csi cc [5] ;    /* coarse column decomposition */
 } csd ;
 
-csi *cs_amd (csi order, const cs *A) ;
-csn *cs_chol (const cs *A, const css *S) ;
-csd *cs_dmperm (const cs *A, csi seed) ;
-csi cs_droptol (cs *A, double tol) ;
-csi cs_dropzeros (cs *A) ;
-csi cs_happly (const cs *V, csi i, double beta, double *x) ;
-csi cs_ipvec (const csi *p, const double *b, double *x, csi n) ;
-csi cs_lsolve (const cs *L, double *x) ;
-csi cs_ltsolve (const cs *L, double *x) ;
-csn *cs_lu (const cs *A, const css *S, double tol) ;
-cs *cs_permute (const cs *A, const csi *pinv, const csi *q, csi values) ;
-csi *cs_pinv (const csi *p, csi n) ;
-csi cs_pvec (const csi *p, const double *b, double *x, csi n) ;
-csn *cs_qr (const cs *A, const css *S) ;
-css *cs_schol (csi order, const cs *A) ;
-css *cs_sqr (csi order, const cs *A, csi qr) ;
-cs *cs_symperm (const cs *A, const csi *pinv, csi values) ;
-csi cs_updown (cs *L, csi sigma, const cs *C, const csi *parent) ;
-csi cs_usolve (const cs *U, double *x) ;
-csi cs_utsolve (const cs *U, double *x) ;
+CS_DLLSPEC csi *cs_amd (csi order, const cs *A) ;
+CS_DLLSPEC csn *cs_chol (const cs *A, const css *S) ;
+CS_DLLSPEC csd *cs_dmperm (const cs *A, csi seed) ;
+CS_DLLSPEC csi cs_droptol (cs *A, double tol) ;
+CS_DLLSPEC csi cs_dropzeros (cs *A) ;
+CS_DLLSPEC csi cs_happly (const cs *V, csi i, double beta, double *x) ;
+CS_DLLSPEC csi cs_ipvec (const csi *p, const double *b, double *x, csi n) ;
+CS_DLLSPEC csi cs_lsolve (const cs *L, double *x) ;
+CS_DLLSPEC csi cs_ltsolve (const cs *L, double *x) ;
+CS_DLLSPEC csn *cs_lu (const cs *A, const css *S, double tol) ;
+CS_DLLSPEC cs *cs_permute (const cs *A, const csi *pinv, const csi *q, csi values) ;
+CS_DLLSPEC csi *cs_pinv (const csi *p, csi n) ;
+CS_DLLSPEC csi cs_pvec (const csi *p, const double *b, double *x, csi n) ;
+CS_DLLSPEC csn *cs_qr (const cs *A, const css *S) ;
+CS_DLLSPEC css *cs_schol (csi order, const cs *A) ;
+CS_DLLSPEC css *cs_sqr (csi order, const cs *A, csi qr) ;
+CS_DLLSPEC cs *cs_symperm (const cs *A, const csi *pinv, csi values) ;
+CS_DLLSPEC csi cs_updown (cs *L, csi sigma, const cs *C, const csi *parent) ;
+CS_DLLSPEC csi cs_usolve (const cs *U, double *x) ;
+CS_DLLSPEC csi cs_utsolve (const cs *U, double *x) ;
 /* utilities */
-css *cs_sfree (css *S) ;
-csn *cs_nfree (csn *N) ;
-csd *cs_dfree (csd *D) ;
+CS_DLLSPEC css *cs_sfree (css *S) ;
+CS_DLLSPEC csn *cs_nfree (csn *N) ;
+CS_DLLSPEC csd *cs_dfree (csd *D) ;
 
 /* --- tertiary CSparse routines -------------------------------------------- */
-csi *cs_counts (const cs *A, const csi *parent, const csi *post, csi ata) ;
-double cs_cumsum (csi *p, csi *c, csi n) ;
-csi cs_dfs (csi j, cs *G, csi top, csi *xi, csi *pstack, const csi *pinv) ;
-csi cs_ereach (const cs *A, csi k, const csi *parent, csi *s, csi *w) ;
-csi *cs_etree (const cs *A, csi ata) ;
-csi cs_fkeep (cs *A, csi (*fkeep) (csi, csi, double, void *), void *other) ;
-double cs_house (double *x, double *beta, csi n) ;
-csi cs_leaf (csi i, csi j, const csi *first, csi *maxfirst, csi *prevleaf,
+CS_DLLSPEC csi *cs_counts (const cs *A, const csi *parent, const csi *post, csi ata) ;
+CS_DLLSPEC double cs_cumsum (csi *p, csi *c, csi n) ;
+CS_DLLSPEC csi cs_dfs (csi j, cs *G, csi top, csi *xi, csi *pstack, const csi *pinv) ;
+CS_DLLSPEC csi cs_ereach (const cs *A, csi k, const csi *parent, csi *s, csi *w) ;
+CS_DLLSPEC csi *cs_etree (const cs *A, csi ata) ;
+CS_DLLSPEC csi cs_fkeep (cs *A, csi (*fkeep) (csi, csi, double, void *), void *other) ;
+CS_DLLSPEC double cs_house (double *x, double *beta, csi n) ;
+CS_DLLSPEC csi cs_leaf (csi i, csi j, const csi *first, csi *maxfirst, csi *prevleaf,
     csi *ancestor, csi *jleaf) ;
-csi *cs_maxtrans (const cs *A, csi seed) ;
-csi *cs_post (const csi *parent, csi n) ;
-csi *cs_randperm (csi n, csi seed) ;
-csi cs_reach (cs *G, const cs *B, csi k, csi *xi, const csi *pinv) ;
-csi cs_scatter (const cs *A, csi j, double beta, csi *w, double *x, csi mark,
+CS_DLLSPEC csi *cs_maxtrans (const cs *A, csi seed) ;
+CS_DLLSPEC csi *cs_post (const csi *parent, csi n) ;
+CS_DLLSPEC csi *cs_randperm (csi n, csi seed) ;
+CS_DLLSPEC csi cs_reach (cs *G, const cs *B, csi k, csi *xi, const csi *pinv) ;
+CS_DLLSPEC csi cs_scatter (const cs *A, csi j, double beta, csi *w, double *x, csi mark,
     cs *C, csi nz) ;
-csd *cs_scc (cs *A) ;
-csi cs_spsolve (cs *G, const cs *B, csi k, csi *xi, double *x,
+CS_DLLSPEC csd *cs_scc (cs *A) ;
+CS_DLLSPEC csi cs_spsolve (cs *G, const cs *B, csi k, csi *xi, double *x,
     const csi *pinv, csi lo) ;
-csi cs_tdfs (csi j, csi k, csi *head, const csi *next, csi *post,
+CS_DLLSPEC csi cs_tdfs (csi j, csi k, csi *head, const csi *next, csi *post,
     csi *stack) ;
 /* utilities */
-csd *cs_dalloc (csi m, csi n) ;
-csd *cs_ddone (csd *D, cs *C, void *w, csi ok) ;
-cs *cs_done (cs *C, void *w, void *x, csi ok) ;
-csi *cs_idone (csi *p, cs *C, void *w, csi ok) ;
-csn *cs_ndone (csn *N, cs *C, void *w, void *x, csi ok) ;
+CS_DLLSPEC csd *cs_dalloc (csi m, csi n) ;
+CS_DLLSPEC csd *cs_ddone (csd *D, cs *C, void *w, csi ok) ;
+CS_DLLSPEC cs *cs_done (cs *C, void *w, void *x, csi ok) ;
+CS_DLLSPEC csi *cs_idone (csi *p, cs *C, void *w, csi ok) ;
+CS_DLLSPEC csn *cs_ndone (csn *N, cs *C, void *w, void *x, csi ok) ;
 
 #define CS_MAX(a,b) (((a) > (b)) ? (a) : (b))
 #define CS_MIN(a,b) (((a) < (b)) ? (a) : (b))
@@ -149,4 +159,8 @@ csn *cs_ndone (csn *N, cs *C, void *w, void *x, csi ok) ;
 #define CS_MARK(w,j) { w [j] = CS_FLIP (w [j]) ; }
 #define CS_CSC(A) (A && (A->nz == -1))
 #define CS_TRIPLET(A) (A && (A->nz >= 0))
+#endif
+
+#ifdef __cplusplus
+} // extern C
 #endif
