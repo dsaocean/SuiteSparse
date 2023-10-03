@@ -59,10 +59,33 @@ static csi cs_vcount (const cs *A, css *S)
     return (1) ;
 }
 
+/* symbolic ordering and analysis for QR with specified column orderingB */
+csi cs_qr_order(const cs* A, css* S)
+{
+    csi n, k, ok, * post;
+    n = A->n;
+
+    cs_free(S->pinv);
+    cs_free(S->parent);
+    cs_free(S->cp);
+    cs_free(S->leftmost);
+
+    cs* C = S->q ? cs_permute(A, NULL, S->q, 0) : ((cs*)A);
+    S->parent = cs_etree(C, 1);       /* etree of C'*C, where C=A(:,q) */
+    post = cs_post(S->parent, n);
+    S->cp = cs_counts(C, S->parent, post, 1);  /* col counts chol(C'*C) */
+    cs_free(post);
+    ok = C && S->parent && S->cp && cs_vcount(C, S);
+    if (ok) for (S->unz = 0, k = 0; k < n; k++) S->unz += S->cp[k];
+    if (S->q) cs_spfree(C);
+    return ok;
+}
+
+
 /* symbolic ordering and analysis for QR or LU */
 css *cs_sqr (csi order, const cs *A, csi qr)
 {
-    csi n, k, ok = 1, *post ;
+    csi n, ok = 1;
     css *S ;
     if (!CS_CSC (A)) return (NULL) ;        /* check inputs */
     n = A->n ;
@@ -72,14 +95,7 @@ css *cs_sqr (csi order, const cs *A, csi qr)
     if (order && !S->q) return (cs_sfree (S)) ;
     if (qr)                                 /* QR symbolic analysis */
     {
-        cs *C = order ? cs_permute (A, NULL, S->q, 0) : ((cs *) A) ;
-        S->parent = cs_etree (C, 1) ;       /* etree of C'*C, where C=A(:,q) */
-        post = cs_post (S->parent, n) ;
-        S->cp = cs_counts (C, S->parent, post, 1) ;  /* col counts chol(C'*C) */
-        cs_free (post) ;
-        ok = C && S->parent && S->cp && cs_vcount (C, S) ;
-        if (ok) for (S->unz = 0, k = 0 ; k < n ; k++) S->unz += S->cp [k] ;
-        if (order) cs_spfree (C) ;
+        ok = cs_qr_order(A, S);
     }
     else
     {

@@ -114,6 +114,7 @@ CS_DLLSPEC csi cs_pvec (const csi *p, const double *b, double *x, csi n) ;
 CS_DLLSPEC csn *cs_qr (const cs *A, const css *S) ;
 CS_DLLSPEC css *cs_schol (csi order, const cs *A) ;
 CS_DLLSPEC css *cs_sqr (csi order, const cs *A, csi qr) ;
+CS_DLLSPEC csi cs_qr_order(const cs* A, css* S);
 CS_DLLSPEC cs *cs_symperm (const cs *A, const csi *pinv, csi values) ;
 CS_DLLSPEC csi cs_updown (cs *L, csi sigma, const cs *C, const csi *parent) ;
 CS_DLLSPEC csi cs_usolve (const cs *U, double *x) ;
