@@ -3,7 +3,7 @@
 // SPDX-License-Identifier: LGPL-2.1+
 #include "cs.h"
 /* solve U'x=b where x and b are dense.  x=b on input, solution on output. */
-csi cs_utsolve (const cs *U, double *x)
+csi cs_utsolve_singular(const cs *U, double *x, double tolerance)
 {
     csi p, j, n, *Up, *Ui ;
     double *Ux ;
@@ -15,7 +15,13 @@ csi cs_utsolve (const cs *U, double *x)
         {
             x [j] -= Ux [p] * x [Ui [p]] ;
         }
-        x [j] /= Ux [Up [j+1]-1] ;
+        double pivot = Ux[Up[j + 1] - 1];
+        x[j] /= fabs(pivot) > tolerance ? pivot : 1.0;
     }
     return (1) ;
+}
+
+csi cs_utsolve (const cs *U, double *x)
+{
+    return cs_utsolve_singular(U, x, 0.0);
 }

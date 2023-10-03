@@ -118,7 +118,9 @@ CS_DLLSPEC csi cs_qr_order(const cs* A, css* S);
 CS_DLLSPEC cs *cs_symperm (const cs *A, const csi *pinv, csi values) ;
 CS_DLLSPEC csi cs_updown (cs *L, csi sigma, const cs *C, const csi *parent) ;
 CS_DLLSPEC csi cs_usolve (const cs *U, double *x) ;
+CS_DLLSPEC csi cs_usolve_singular (const cs *U, double *x, double tolerance) ;
 CS_DLLSPEC csi cs_utsolve (const cs *U, double *x) ;
+CS_DLLSPEC csi cs_utsolve_singular (const cs *U, double *x, double tolerance) ;
 /* utilities */
 CS_DLLSPEC css *cs_sfree (css *S) ;
 CS_DLLSPEC csn *cs_nfree (csn *N) ;
